@@ -6,8 +6,6 @@ import pandas as pd
 
 
 #Connect to WebSite
-URL = "https://www.tesco.com/groceries/en-GB/products/255810019?selectedUrl=https://digitalcontent.api.tesco.com/v2/media/ghs/b1abfc12-9d21-4d66-a4e3-55ea706ddfbb/6b0aa485-2ba2-483f-9e2b-60b867051641.jpeg?h=540&w=540&preservedReferrer=https://www.tesco.com/"
-
 def get_item_from_URL(URL):
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"}
 
