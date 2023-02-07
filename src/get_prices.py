@@ -4,8 +4,9 @@ import time
 import datetime
 import pandas as pd
 
-
 #Connect to WebSite
+URL = "https://www.tesco.com/groceries/en-GB/products/255810019?selectedUrl=https://digitalcontent.api.tesco.com/v2/media/ghs/b1abfc12-9d21-4d66-a4e3-55ea706ddfbb/6b0aa485-2ba2-483f-9e2b-60b867051641.jpeg?h=540&w=540&preservedReferrer=https://www.tesco.com/"
+
 def get_item_from_URL(URL):
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"}
 
@@ -30,25 +31,26 @@ def get_item_from_URL(URL):
     print(price)
     return title, price
 
-
-basket = pd.read_excel('basket_first_pick.xlsx', sheet_name = 'data')
-
+basket = pd.read_csv('basket_redundancies.csv')
+st = time.time()
+redundancies = 5
+for j in range(redundancies):
+    basket[f'Price_{j}']= None
 for i in basket.index:
-    URL = basket.loc[i, 'Link']
-    try:
-        title, price = get_item_from_URL(URL)
-        basket.loc[i, 'Quoted title'] = title
-        basket.loc[i, 'Price'] = price
-    except:
-        print('failed' , basket.loc[i, 'Item'], basket.loc[i, 'Link'])
-        
+    for j in range(redundancies):
+        URL = basket.loc[i, f'Link_{j}']
+        try:
+            title, price = get_item_from_URL(URL)
+            #basket.loc[i, 'Quoted title'] = title
+            basket.loc[i, f'Price_{j}'] = price
+            print('success', j , price)
+        except:
+            print('failed')# , basket.loc[i, 'Item'], basket.loc[i, 'Link'])
+et = time.time()
+
+print(et-st)
 
 now = datetime.datetime.now()
 current_time = now.strftime("%y%m%d_%H_%M_%S")
 print("Current Time =", current_time)
-
-
 basket.to_csv(f'dumps/dump_{current_time}.csv')
-
-
-
